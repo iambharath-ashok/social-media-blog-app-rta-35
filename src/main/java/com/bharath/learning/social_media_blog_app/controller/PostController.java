@@ -2,6 +2,7 @@ package com.bharath.learning.social_media_blog_app.controller;
 
 
 import com.bharath.learning.social_media_blog_app.dto.PostDto;
+import com.bharath.learning.social_media_blog_app.payload.PostResponse;
 import com.bharath.learning.social_media_blog_app.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
