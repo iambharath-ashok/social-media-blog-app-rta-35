@@ -4,6 +4,8 @@ package com.bharath.learning.social_media_blog_app.controller;
 import com.bharath.learning.social_media_blog_app.dto.PostDto;
 import com.bharath.learning.social_media_blog_app.payload.PostResponse;
 import com.bharath.learning.social_media_blog_app.service.PostService;
+import jakarta.validation.Valid;
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +36,8 @@ public class PostController {
     // Get Post by ID
     // GET /api/v1/posts/{postId}
     @GetMapping("/{postId}")
-    public PostDto getPostById(@PathVariable Long postId) {
+    public PostDto getPostById(
+            @PathVariable Long postId) {
         // Logic to fetch a post by ID
         return postService.getPostById(postId); // Placeholder return statement
     }
@@ -44,7 +47,7 @@ public class PostController {
     // @RequestMapping(method = RequestMethod.POST) - this is an alternative way to define a POST endpoint
     // @RequestBody is used to bind the request body to the method parameter
     @PostMapping
-    public PostDto createPost(@RequestBody PostDto postDto) {
+    public PostDto createPost(@Valid @RequestBody PostDto postDto) {
         // Logic to create a new post
         return postService.createPost(postDto); // Placeholder return statement
     }
@@ -56,7 +59,7 @@ public class PostController {
     // @PathVariable is used to bind the path variable to the method parameter - in this case, postId
     // @RequestBody is used to bind the request body to the method parameter - in this case, postDto
     @PutMapping("/{postId}")
-    public PostDto updatePost(@PathVariable Long postId, @RequestBody PostDto postDto) {
+    public PostDto updatePost(@PathVariable Long postId, @Valid @RequestBody PostDto postDto) {
         // Logic to update an existing post
         return postService.updatePost(postId, postDto); // Placeholder return statement
     }
