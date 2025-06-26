@@ -2,6 +2,7 @@ package com.bharath.learning.social_media_blog_app.service.impl;
 
 import com.bharath.learning.social_media_blog_app.dto.PostDto;
 import com.bharath.learning.social_media_blog_app.entity.PostEntity;
+import com.bharath.learning.social_media_blog_app.exceptions.PostNotFoundException;
 import com.bharath.learning.social_media_blog_app.payload.PostResponse;
 import com.bharath.learning.social_media_blog_app.repository.PostRepository;
 import com.bharath.learning.social_media_blog_app.service.PostService;
@@ -59,7 +60,7 @@ public class PostServiceImpl implements PostService {
                     .build();
             return postResponse;
         }
-        return null;
+        throw  new PostNotFoundException("No posts found for the given page number and size: " + pageNumber + ", " + pageSize);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class PostServiceImpl implements PostService {
                     .build();
             return postResponse;
         }
-        return null;
+       throw new PostNotFoundException("No posts found for the given page number, size, sortBy and sortDirection: " + pageNumber + ", " + pageSize + ", " + sortBy + ", " + sortDirection);
     }
 
     @Override
@@ -103,7 +104,7 @@ public class PostServiceImpl implements PostService {
             PostDto postDto = postEntityMapper.mapPostEntityToPostDto(postEntity);
             return postDto;
         }
-        throw new RuntimeException("Post not found with ID: " + postId);
+        throw new PostNotFoundException("Post not found with ID: " + postId);
     }
 
     @Override
@@ -125,7 +126,7 @@ public class PostServiceImpl implements PostService {
            PostEntity updatedPostEntity = postRepository.save(postEntityToBeUpdated);
            return postEntityMapper.mapPostEntityToPostDto(updatedPostEntity);
         } else {
-            throw new RuntimeException("Post not found with ID: " + postIdToBeUpdated);
+            throw new PostNotFoundException("Post not found with ID: " + postIdToBeUpdated);
         }
     }
 
@@ -138,6 +139,6 @@ public class PostServiceImpl implements PostService {
            postRepository.delete(postEntityToBeDeleted);
            return true;
         }
-        throw new RuntimeException("Post not found with ID: " + postId);
+        throw new PostNotFoundException("Post not found with ID: " + postId);
     }
 }

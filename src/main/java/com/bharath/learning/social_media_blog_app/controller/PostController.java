@@ -2,10 +2,13 @@ package com.bharath.learning.social_media_blog_app.controller;
 
 
 import com.bharath.learning.social_media_blog_app.dto.PostDto;
+import com.bharath.learning.social_media_blog_app.payload.ErrorDetails;
 import com.bharath.learning.social_media_blog_app.payload.PostResponse;
 import com.bharath.learning.social_media_blog_app.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +38,11 @@ public class PostController {
     @Operation(summary = "Get all posts", description = "Fetches all posts from the application")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved posts"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))
+            ),
+
+
     })
     public List<PostDto> getAllPosts() {
         // Logic to fetch all posts
@@ -50,7 +57,9 @@ public class PostController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved post"),
             @ApiResponse(responseCode = "404", description = "Post not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))
+            )
     })
     public PostDto getPostById(
            @Parameter(description = "ID of the post to retrieve", required = true) @PathVariable Long postId) {
@@ -67,7 +76,9 @@ public class PostController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Post created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))
+            )
     })
     public PostDto createPost(
             @Parameter(description = "Post payload data to create a new post", required = true)
@@ -88,7 +99,9 @@ public class PostController {
             @ApiResponse(responseCode = "200", description = "Post updated successfully"),
             @ApiResponse(responseCode = "404", description = "Post not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))
+            )
     })
     public PostDto updatePost(
             @Parameter(description = "ID of the post to update", required = true)
@@ -112,7 +125,9 @@ public class PostController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Post deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Post not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))
+            )
     })
     public boolean deletePost(
             @Parameter(description = "ID of the post to delete", required = true)
