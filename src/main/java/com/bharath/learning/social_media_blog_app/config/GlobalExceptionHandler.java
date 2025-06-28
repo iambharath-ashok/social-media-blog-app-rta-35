@@ -1,5 +1,6 @@
 package com.bharath.learning.social_media_blog_app.config;
 
+import com.bharath.learning.social_media_blog_app.exceptions.CommentNotFoundException;
 import com.bharath.learning.social_media_blog_app.exceptions.PostNotFoundException;
 import com.bharath.learning.social_media_blog_app.payload.ErrorDetails;
 import org.springframework.http.HttpStatus;
@@ -53,7 +54,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleCommentNotFoundException(CommentNotFoundException ex, WebRequest request) {
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .timestamp(LocalDateTime.now())
+                .message(ex.getMessage())
+                .path(request.getDescription(false))
+                .errorCode("COMMENT_NOT_FOUND")
+                .build();
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
     // Handle Runtime Exceptions
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorDetails> handleRuntimeException(RuntimeException ex, WebRequest request) {
         ErrorDetails errorDetails = ErrorDetails.builder()
                 .timestamp(LocalDateTime.now())

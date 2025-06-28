@@ -8,6 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "posts")
 
@@ -35,5 +38,10 @@ public class PostEntity {
     @Size(min = 7, message = "Post content must be at least 7 characters long")
     @Column(name = "content")
     private String content;
+
+    // OneToMany Relationship
+    // Single Posts can have multiple comments
+    @OneToMany(mappedBy = "postEntity")
+    private Set<CommentEntity> comments = new HashSet<>();
 
 }
