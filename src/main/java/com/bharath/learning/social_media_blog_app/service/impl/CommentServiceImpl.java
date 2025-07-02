@@ -91,18 +91,15 @@ public class CommentServiceImpl implements CommentService {
         // validate if comment actually belongs to the post
         if (commentEntity != null && postEntity != null ) {
             if (commentEntity.getPostEntity().getId().equals(postEntity.getId())) {
-                return commentEntityMapper.mapEntityToDto(commentEntity);
+                // Update the comment entity with new values from commentDto
+                commentEntity.setBody(commentDto.getBody());
+                commentEntity.setUserName(commentDto.getUserName());
+                commentEntity.setEmail(commentDto.getEmail());
             } else {
                 throw new RuntimeException("Comment with id: " + commentId + " does not belong to Post with id: " + postId);
             }
         }
 
-        //if comment exists and valid then update old comment with new comment dto
-        if (commentEntity != null && commentDto != null) {
-            commentEntity.setBody(commentDto.getBody());
-            commentEntity.setUserName(commentDto.getUserName());
-            commentEntity.setEmail(commentDto.getEmail());
-        }
 
         // save the updated comment entity to the database
         CommentEntity newlySavedCommentEntity = this.commentRepository.save(commentEntity);
