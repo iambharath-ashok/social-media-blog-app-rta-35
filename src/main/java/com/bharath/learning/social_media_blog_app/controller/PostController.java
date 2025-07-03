@@ -11,15 +11,18 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/posts")
+@SecurityRequirement(name = "basicAuth")
 @Tag(name = "Posts Management", description = "API's for creating, updating, retrieving and deleting posts in the Social Media Blog Application")
 public class PostController {
 
@@ -44,6 +47,7 @@ public class PostController {
 
 
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<PostDto> getAllPosts() {
         // Logic to fetch all posts
         return postService.getAllPosts(); // Placeholder return statement
@@ -61,6 +65,7 @@ public class PostController {
                     content = @Content(schema = @Schema(implementation = ErrorDetails.class))
             )
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public PostDto getPostById(
            @Parameter(description = "ID of the post to retrieve", required = true) @PathVariable Long postId) {
         // Logic to fetch a post by ID
@@ -80,6 +85,7 @@ public class PostController {
                     content = @Content(schema = @Schema(implementation = ErrorDetails.class))
             )
     })
+    @PreAuthorize("hasRole('ADMIN')")
     public PostDto createPost(
             @Parameter(description = "Post payload data to create a new post", required = true)
             @Valid @RequestBody PostDto postDto) {
@@ -103,6 +109,7 @@ public class PostController {
                     content = @Content(schema = @Schema(implementation = ErrorDetails.class))
             )
     })
+    @PreAuthorize("hasRole('ADMIN')")
     public PostDto updatePost(
             @Parameter(description = "ID of the post to update", required = true)
             @PathVariable
@@ -129,6 +136,7 @@ public class PostController {
                     content = @Content(schema = @Schema(implementation = ErrorDetails.class))
             )
     })
+    @PreAuthorize("hasRole('ADMIN')")
     public boolean deletePost(
             @Parameter(description = "ID of the post to delete", required = true)
             @PathVariable Long postId) {
